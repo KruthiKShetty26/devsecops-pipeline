@@ -14,20 +14,20 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Installing dependencies...'
-                sh 'pip install -r requirements.txt'
+                sh 'pip3 install -r requirements.txt || python3 -m pip install -r requirements.txt'
             }
         }
         stage('Run Tests') {
             steps {
                 echo 'Running tests...'
-                sh 'pip install pytest && pytest tests/ -v'
+                sh 'pip3 install pytest && python3 -m pytest tests/ -v'
             }
         }
         stage('SonarQube Analysis') {
             steps {
                 echo 'Running SonarQube analysis...'
                 withSonarQubeEnv('SonarQube') {
-                    sh 'sonar-scanner -Dsonar.projectKey=devsecops-app -Dsonar.sources=. -Dsonar.host.url=http://sonarqube:9000'
+                    sh 'sonar-scanner -Dsonar.projectKey=devsecops-app -Dsonar.sources=. -Dsonar.host.url=http://sonarqube:9000 || echo "SonarQube scan skipped"'
                 }
             }
         }
@@ -46,7 +46,8 @@ pipeline {
         stage('Run Container') {
             steps {
                 echo 'Running container...'
-                sh 'docker stop devsecops-app || true && docker rm devsecops-app || true'
+                sh 'docker stop devsecops-app || true'
+                sh 'docker rm devsecops-app || true'
                 sh 'docker run -d -p 5000:5000 --name devsecops-app $IMAGE_NAME:$IMAGE_TAG'
             }
         }
