@@ -1,23 +1,16 @@
-FROM python:3.11-slim
+FROM python:3.9-slim
 
 WORKDIR /app
 
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
 EXPOSE 5000
 
-CMD ["python", "app.py"]
-```
+ENV FLASK_APP=app.py
+ENV FLASK_ENV=production
 
-Save it as:
-- **File name:** `Dockerfile` (no extension at all!)
-- **Save as type:** **"All Files (*.*)"**
-
-Save it in the **main project folder** (`devsecops-pipeline`), not inside `tests`.
-
-Then run:
-```
-dir
+CMD ["python", "-m", "flask", "run", "--host=0.0.0.0"]
