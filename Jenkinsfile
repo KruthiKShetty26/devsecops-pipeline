@@ -20,34 +20,38 @@ pipeline {
                 sh 'echo "Running tests..."'
             }
         }
-
-        stage('SonarQube Analysis') {
-            steps {
-                sh 'echo "SonarQube failed"'
-                sh 'exit 1'
-            }
+	stage('SonarQube Analysis') {
+    steps {
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+            sh 'echo "SonarQube analysis failed intentionally"'
+            sh 'exit 1'
         }
+    }
+}
 
-        stage('Build Docker Image') {
-            steps {
-                sh 'echo "Docker build failed"'
-                sh 'exit 1'
-            }
+stage('Build Docker Image') {
+    steps {
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+            sh 'echo "Docker build failed intentionally"'
+            sh 'exit 1'
         }
+    }
+}
 
-        stage('Trivy Security Scan') {
-            steps {
-                sh 'echo "Security scan failed"'
-                sh 'exit 1'
-            }
+stage('Trivy Security Scan') {
+    steps {
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+            sh 'echo "Trivy scan failed intentionally"'
+            sh 'exit 1'
         }
+    }
+}
 
-        stage('Run Container') {
-            steps {
-                sh 'echo "Container failed to run"'
-                sh 'exit 1'
-            }
+stage('Run Container') {
+    steps {
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+            sh 'echo "Container run failed intentionally"'
+            sh 'exit 1'
         }
-
     }
 }
