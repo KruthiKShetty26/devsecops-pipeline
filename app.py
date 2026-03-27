@@ -247,7 +247,7 @@ HTML = '''
     <div class="container">
         <div class="header">
             <div class="tag">6th Semester Project</div>
-            <h1>DevSecOps<br>Pipeline Manager</h1>
+            <h1>DevSecOps<br>Manager</h1>
             <p>Automated CI/CD with Security Scanning and Continuous Deployment</p>
             <div class="tech-pills">
                 <span class="pill">Jenkins</span>
