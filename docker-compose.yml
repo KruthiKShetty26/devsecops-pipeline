@@ -1,5 +1,4 @@
 version: '3.8'
-
 services:
   jenkins:
     image: jenkins/jenkins:lts
@@ -10,9 +9,11 @@ services:
     volumes:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     networks:
       - devsecops
-
   sonarqube:
     image: sonarqube:community
     container_name: sonarqube
@@ -23,14 +24,15 @@ services:
     volumes:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_logs:/opt/sonarqube/logs
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     networks:
       - devsecops
-
 volumes:
   jenkins_home:
   sonarqube_data:
   sonarqube_logs:
-
 networks:
   devsecops:
     driver: bridge

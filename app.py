@@ -413,8 +413,8 @@ def health():
 @app.route('/info')
 def info():
     return jsonify({
-        'app': 'DevSecOps Pipeline Manager',
-        'version': '2.0.0',
+        'app': 'DevSecOps Manager',
+        'version': '3.0.0',
         'pipeline': 'Jenkins CI/CD',
         'security': 'SonarQube + Trivy',
         'container': 'Docker'
