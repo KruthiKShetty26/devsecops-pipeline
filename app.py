@@ -47,7 +47,7 @@ def health():
 def info():
     return jsonify({
         'app': 'DevSecOps Pipeline App',
-        'version': '1.0.0',
+        'version': '2.0.0',
         'python': platform.python_version(),
         'platform': platform.system(),
         'pipeline': 'Jenkins CI/CD',
