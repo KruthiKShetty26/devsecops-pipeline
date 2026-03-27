@@ -24,15 +24,11 @@ pipeline {
             }
         }
         stage('SonarQube Analysis') {
-            steps {
-                echo 'Running SonarQube analysis...'
-                withSonarQubeEnv('SonarQube') {
-                    sh 'echo "SonarQube scanning..."'
-                }
-                echo 'Quality Gate FAILED - Hardcoded secrets detected!'
-                error('SonarQube Quality Gate Failed! Hardcoded credentials found in code.')
-            }
-        }
+    		steps {
+        		echo "Running SonarQube analysis..."
+        		sh 'exit 1'
+    		}
+	}
         stage('Build Docker Image') {
             steps {
                 echo 'Building Docker image...'
