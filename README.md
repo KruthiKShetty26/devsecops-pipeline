@@ -67,7 +67,7 @@ docker compose up -d
 ```
 
 ### Access Services
-- **Flask App**: http://localhost:5000
+- **Flask App**: http://127.0.0.1:5000
 - **Jenkins**: http://localhost:8080
 - **SonarQube**: http://localhost:9000
 
