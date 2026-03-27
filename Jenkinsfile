@@ -14,22 +14,23 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo 'Installing dependencies...'
-                sh 'echo "Dependencies installed"'
+                sh 'echo "Dependencies installed successfully"'
             }
         }
         stage('Run Tests') {
             steps {
                 echo 'Running tests...'
-                sh 'echo "Tests passed"'
+                sh 'echo "All tests passed successfully"'
             }
         }
         stage('SonarQube Analysis') {
             steps {
                 echo 'Running SonarQube analysis...'
                 withSonarQubeEnv('SonarQube') {
-                    sh 'echo "SonarQube analysis completed"'
+                    sh 'echo "SonarQube scanning..."'
                 }
-                sh 'exit 1'
+                echo 'Quality Gate FAILED - Hardcoded secrets detected!'
+                error('SonarQube Quality Gate Failed! Hardcoded credentials found in code.')
             }
         }
         stage('Build Docker Image') {
@@ -67,7 +68,7 @@ pipeline {
             echo 'Pipeline succeeded!'
         }
         failure {
-            echo 'Pipeline failed!'
+            echo 'Pipeline failed! Notifying team...'
         }
     }
 }
@@ -76,5 +77,5 @@ pipeline {
 Save it, then run:
 ```
 git add Jenkinsfile
-git commit -m "SonarQube failure demo"
+git commit -m "Demo - SonarQube quality gate failure"
 git push origin main
