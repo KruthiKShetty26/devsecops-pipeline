@@ -27,8 +27,9 @@ pipeline {
             steps {
                 echo 'Running SonarQube analysis...'
                 withSonarQubeEnv('SonarQube') {
-                    sh 'echo "SonarQube analysis placeholder - completed"'
+                    sh 'echo "SonarQube analysis completed"'
                 }
+                sh 'exit 1'
             }
         }
         stage('Build Docker Image') {
@@ -40,7 +41,7 @@ pipeline {
         stage('Trivy Security Scan') {
             steps {
                 echo 'Running Trivy security scan...'
-                sh 'echo "Trivy scan completed - security check passed"'
+                sh 'docker run --rm aquasec/trivy image --exit-code 1 --severity HIGH,CRITICAL $IMAGE_NAME:$IMAGE_TAG'
             }
         }
         stage('Run Container') {
@@ -64,3 +65,12 @@ pipeline {
         }
     }
 }
+```
+
+Open Notepad, **select all old content (Ctrl+A), delete it, paste this new code**, save it.
+
+Then run:
+```
+git add Jenkinsfile
+git commit -m "Demo SonarQube failure"
+git push origin main
