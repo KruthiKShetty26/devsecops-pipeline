@@ -1,77 +1,53 @@
 pipeline {
     agent any
-    environment {
-        IMAGE_NAME = 'devsecops-app'
-        IMAGE_TAG = 'latest'
-    }
+
     stages {
-        stage('Checkout') {
+
+        stage('Checkout SCM') {
             steps {
-                echo 'Checking out code...'
-                checkout scm
+                git 'https://github.com/your-repo.git'
             }
         }
+
         stage('Install Dependencies') {
             steps {
-                echo 'Installing dependencies...'
-                sh 'echo "Dependencies installed successfully"'
+                sh 'pip install -r requirements.txt'
             }
         }
+
         stage('Run Tests') {
             steps {
-                echo 'Running tests...'
-                sh 'echo "All tests passed successfully"'
+                sh 'echo "Running tests..."'
             }
         }
+
         stage('SonarQube Analysis') {
-    		steps {
-        		echo "Running SonarQube analysis..."
-        		sh 'exit 1'
-    		}
-	}
+            steps {
+                sh 'echo "SonarQube failed"'
+                sh 'exit 1'
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
-                echo 'Building Docker image...'
-                sh 'docker build -t $IMAGE_NAME:$IMAGE_TAG .'
+                sh 'echo "Docker build failed"'
+                sh 'exit 1'
             }
         }
+
         stage('Trivy Security Scan') {
             steps {
-                echo 'Running Trivy security scan...'
-                sh '''
-                    docker run --rm aquasec/trivy image \
-                    --exit-code 1 \
-                    --severity HIGH,CRITICAL \
-                    --no-progress \
-                    $IMAGE_NAME:$IMAGE_TAG
-                '''
+                sh 'echo "Security scan failed"'
+                sh 'exit 1'
             }
         }
+
         stage('Run Container') {
             steps {
-                echo 'Running container...'
-                sh 'docker stop devsecops-app || true'
-                sh 'docker rm devsecops-app || true'
-                sh 'docker run -d -p 5000:5000 --name devsecops-app $IMAGE_NAME:$IMAGE_TAG'
+                sh 'echo "Container failed to run"'
+                sh 'exit 1'
             }
         }
-    }
-    post {
-        always {
-            echo 'Pipeline finished!'
-        }
-        success {
-            echo 'Pipeline succeeded!'
-        }
-        failure {
-            echo 'Pipeline failed! Notifying team...'
-        }
+
     }
 }
-```
-
-Save it, then run:
-```
-git add Jenkinsfile
-git commit -m "Demo - SonarQube quality gate failure"
-git push origin main
